@@ -1,33 +1,78 @@
 package calculator;
 
 public class Validator {
-    // input 값 검증
+    private boolean isCustom;
+
     public void validateInput(String input) {
-        if (input.startsWith("//")) {
+        isCustom = input.startsWith(Constants.CUSTOM_INDICATOR_START);
+
+        if (isCustom) {
             validateCustomFormat(input);
+            validateCustomDelimiterRules(input);
+        } else {
+            validateDefaultDelimiterRules(input);
+        }
+    }
+
+    private void validateCustomDelimiterRules(String input) {
+        String numbers = extractNumbers(input);
+        String delimiter = extractCustomDelimiter(input);
+
+        if (numbers.startsWith(delimiter) || numbers.endsWith(delimiter)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (numbers.contains(delimiter + delimiter)) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void validateDefaultDelimiterRules(String input) {
+        validateNotStartsWithDelimiter(input);
+        validateNotEndsWithDelimiter(input);
+        validateNoConsecutiveDelimiters(input);
+    }
+
+    private void validateNotStartsWithDelimiter(String input) {
+        for (String delimiter : Constants.DEFAULT_DELIMITERS) {
+            if (input.startsWith(delimiter)) {
+                throw new IllegalArgumentException();
+            }
+        }
+    }
+
+    private void validateNotEndsWithDelimiter(String input) {
+        for (String delimiter : Constants.DEFAULT_DELIMITERS) {
+            if (input.endsWith(delimiter)) {
+                throw new IllegalArgumentException();
+            }
+        }
+    }
+
+    private void validateNoConsecutiveDelimiters(String input) {
+        String delimiterPattern = "[" + String.join("", Constants.DEFAULT_DELIMITERS) + "]{2,}";
+        if (input.matches(".*" + delimiterPattern + ".*")) {
+            throw new IllegalArgumentException();
         }
     }
 
     private void validateCustomFormat(String input) {
-        // "\n"이 없으면 예외
-        if (!input.contains("\\n")) {
+        if (!input.contains(Constants.CUSTOM_INDICATOR_END)) {
             throw new IllegalArgumentException();
         }
 
-        // 커스텀 구분자 추출 후 검증
-        int end = input.indexOf("\\n");
-        String delimiter = input.substring(2, end);
-        validateCustomDelimiter(delimiter);
+        String delimiter = extractCustomDelimiter(input);
+        if (delimiter.length() != 1 || Character.isDigit(delimiter.charAt(0))) {
+            throw new IllegalArgumentException();
+        }
     }
 
-    private void validateCustomDelimiter(String delimiter) {
-        // 커스텀 구분자가 한 글자인지 확인
-        if (delimiter.length() != 1) {
-            throw new IllegalArgumentException();
-        }
-        // 커스텀 구분자가 숫자가 아닌지 확인
-        if (Character.isDigit(delimiter.charAt(0))) {
-            throw new IllegalArgumentException();
-        }
+    private String extractNumbers(String input) {
+        return input.substring(input.indexOf(Constants.CUSTOM_INDICATOR_END) + Constants.CUSTOM_INDICATOR_END.length());
+    }
+
+    private String extractCustomDelimiter(String input) {
+        int end = input.indexOf(Constants.CUSTOM_INDICATOR_END);
+        return input.substring(Constants.CUSTOM_INDICATOR_START.length(), end);
     }
 }
