@@ -30,7 +30,7 @@ public class Parser {
     }
 
     // 문자열을 지정된 구분자 기준으로 분리하여 리스트로 반환
-    public List<String> split(String numbers, String delimiter) {
+    public List<String> split(String delimiter, String numbers) {
         return Arrays.asList(numbers.split(delimiter));
     }
 }
