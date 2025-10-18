@@ -1,6 +1,7 @@
 package calculator;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Validator {
     public void validateCustomDelimiterRules(String delimiter, String numbers) {
@@ -25,6 +26,13 @@ public class Validator {
 
         // 2. 구분자는 연속으로 올 수 없다
         if (numbers.contains(delimiter + delimiter)) throw new IllegalArgumentException();
+
+        // 3. 커스텀 구분자 외의 문자가 포함될 수 없다
+        // ^ : 문자열 시작 / $ : 문자열 끝
+        // [1-9<delimiter>] : 숫자나 해당 구분자만 허용
+        // + : 하나 이상 반복
+        String allowedPattern = "^[1-9" + Pattern.quote(delimiter) + "]+$";
+        if (!numbers.matches(allowedPattern)) throw new IllegalArgumentException();
     }
 
     public void validateDefaultDelimiterRules(String numbers) {
@@ -39,6 +47,9 @@ public class Validator {
         // .* ... .* -> 문자열 어디에든 그런 패턴이 존재하면 true
         String delimiterPattern = "[" + String.join("", Constants.DEFAULT_DELIMITERS) + "]{2,}";
         if (numbers.matches(".*" + delimiterPattern + ".*")) throw new IllegalArgumentException();
+
+        // 3. 기본 구분자 외의 문자가 포함될 수 없다
+        if (!numbers.matches("^[1-9,:]+$")) throw new IllegalArgumentException();
     }
 
     public void validateTokens(List<String> tokens) {
