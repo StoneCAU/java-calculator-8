@@ -2,7 +2,6 @@ package calculator;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Parser {
     // 커스텀 구분자 형식인지 판단
@@ -23,7 +22,7 @@ public class Parser {
         String delimiter = input.substring(2, end);
         if (delimiter.isEmpty()) throw new IllegalArgumentException(); // input 형식 오류
 
-        return Pattern.quote(delimiter);
+        return delimiter;
     }
 
     // numbers String 값 리턴
