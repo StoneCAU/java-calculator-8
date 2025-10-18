@@ -1,5 +1,7 @@
 package calculator;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Parser {
@@ -25,5 +27,10 @@ public class Parser {
         if (!isCustomDelimiter(input)) return input;
         int start = input.indexOf(Constants.CUSTOM_INDICATOR_END);
         return input.substring(start + 2);
+    }
+
+    // 문자열을 지정된 구분자 기준으로 분리하여 리스트로 반환
+    public List<String> split(String numbers, String delimiter) {
+        return Arrays.asList(numbers.split(delimiter));
     }
 }
