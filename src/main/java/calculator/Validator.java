@@ -1,5 +1,7 @@
 package calculator;
 
+import java.util.List;
+
 public class Validator {
     public void validateCustomDelimiterRules(String delimiter, String numbers) {
         // 1. delimiter 검사
@@ -38,4 +40,23 @@ public class Validator {
         String delimiterPattern = "[" + String.join("", Constants.DEFAULT_DELIMITERS) + "]{2,}";
         if (numbers.matches(".*" + delimiterPattern + ".*")) throw new IllegalArgumentException();
     }
+
+    public void validateTokens(List<String> tokens) {
+        tokens.forEach(token -> {
+            // 1. 토큰은 숫자로 이루어져야 한다
+            validateIsNumber(token);
+
+            // 2. 토큰은 0으로 시작할 수 없다
+            validateNoLeadingZero(token);
+        });
+    }
+
+    private void validateIsNumber(String token) {
+        if (!token.matches("\\d+")) throw new IllegalArgumentException();
+    }
+
+    private void validateNoLeadingZero(String token) {
+        if (token.startsWith("0")) throw new IllegalArgumentException();
+    }
+
 }
