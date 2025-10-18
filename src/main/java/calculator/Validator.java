@@ -1,78 +1,27 @@
 package calculator;
 
 public class Validator {
-    private boolean isCustom;
+    public void validateCustomDelimiterRules(String delimiter, String numbers) {
+        // 1. delimiter 검사
+        validateCustomDelimiter(delimiter);
 
-    public void validateInput(String input) {
-        isCustom = input.startsWith(Constants.CUSTOM_INDICATOR_START);
-
-        if (isCustom) {
-            validateCustomFormat(input);
-            validateCustomDelimiterRules(input);
-        } else {
-            validateDefaultDelimiterRules(input);
-        }
+        // 2. numbers 검사
+        validateCustomNumbers(delimiter, numbers);
     }
 
-    private void validateCustomDelimiterRules(String input) {
-        String numbers = extractNumbers(input);
-        String delimiter = extractCustomDelimiter(input);
+    private void validateCustomDelimiter(String delimiter) {
+        // 1. 커스텀 구분자는 한 글자여야 한다
+        if (delimiter.length() != 1) throw new IllegalArgumentException();
 
-        if (numbers.startsWith(delimiter) || numbers.endsWith(delimiter)) {
-            throw new IllegalArgumentException();
-        }
-
-        if (numbers.contains(delimiter + delimiter)) {
-            throw new IllegalArgumentException();
-        }
+        // 2. 커스텀 구분자는 숫자일 수 없다
+        if (Character.isDigit(delimiter.charAt(0))) throw new IllegalArgumentException();
     }
 
-    private void validateDefaultDelimiterRules(String input) {
-        validateNotStartsWithDelimiter(input);
-        validateNotEndsWithDelimiter(input);
-        validateNoConsecutiveDelimiters(input);
-    }
+    private void validateCustomNumbers(String delimiter, String numbers) {
+        // 1. 문자열은 구분자로 시작/끝날 수 없다
+        if (numbers.startsWith(delimiter) || numbers.endsWith(delimiter)) throw new IllegalArgumentException();
 
-    private void validateNotStartsWithDelimiter(String input) {
-        for (String delimiter : Constants.DEFAULT_DELIMITERS) {
-            if (input.startsWith(delimiter)) {
-                throw new IllegalArgumentException();
-            }
-        }
-    }
-
-    private void validateNotEndsWithDelimiter(String input) {
-        for (String delimiter : Constants.DEFAULT_DELIMITERS) {
-            if (input.endsWith(delimiter)) {
-                throw new IllegalArgumentException();
-            }
-        }
-    }
-
-    private void validateNoConsecutiveDelimiters(String input) {
-        String delimiterPattern = "[" + String.join("", Constants.DEFAULT_DELIMITERS) + "]{2,}";
-        if (input.matches(".*" + delimiterPattern + ".*")) {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    private void validateCustomFormat(String input) {
-        if (!input.contains(Constants.CUSTOM_INDICATOR_END)) {
-            throw new IllegalArgumentException();
-        }
-
-        String delimiter = extractCustomDelimiter(input);
-        if (delimiter.length() != 1 || Character.isDigit(delimiter.charAt(0))) {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    private String extractNumbers(String input) {
-        return input.substring(input.indexOf(Constants.CUSTOM_INDICATOR_END) + Constants.CUSTOM_INDICATOR_END.length());
-    }
-
-    private String extractCustomDelimiter(String input) {
-        int end = input.indexOf(Constants.CUSTOM_INDICATOR_END);
-        return input.substring(Constants.CUSTOM_INDICATOR_START.length(), end);
+        // 2. 구분자는 연속으로 올 수 없다
+        if (numbers.contains(delimiter + delimiter)) throw new IllegalArgumentException();
     }
 }
