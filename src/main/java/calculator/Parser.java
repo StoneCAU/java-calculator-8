@@ -18,7 +18,11 @@ public class Parser {
         }
 
         int end = input.indexOf(Constants.CUSTOM_INDICATOR_END);
+        if (end == -1) throw new IllegalArgumentException(); // input 형식 오류
+
         String delimiter = input.substring(2, end);
+        if (delimiter.isEmpty()) throw new IllegalArgumentException(); // input 형식 오류
+
         return Pattern.quote(delimiter);
     }
 
