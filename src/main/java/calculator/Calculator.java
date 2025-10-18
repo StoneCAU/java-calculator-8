@@ -5,27 +5,35 @@ import java.util.List;
 
 public class Calculator {
     private final Parser parser = new Parser();
+    private final Validator validator = new Validator();
 
     public BigInteger calculate(String input) {
-        // 1. 빈 문자열 체크
-        if (input.isEmpty()) {
-            return BigInteger.ZERO;
-        }
+        // 공백("") 입력시 0을 리턴
+        if (input.isEmpty()) return BigInteger.ZERO;
 
-        // 2. 파싱
-        List<String> numbers = parser.parse(input);
+        // 1. 파싱 단계
+        boolean isCustom = parser.isCustomDelimiter(input);
+        String delimiter = parser.extractDelimiter(input);
+        String numbers = parser.extractNumbers(input);
 
-        // 3. 검증
+        // 2. 검증 단계
+        if (isCustom) validator.validateCustomDelimiterRules(delimiter, numbers);
+        else validator.validateDefaultDelimiterRules(numbers);
 
-        // 4. 계산
-        return sum(numbers);
+        List<String> tokens = parser.split(delimiter, numbers);
+        validator.validateTokens(tokens);
+
+        // 3. 계산 단계
+        return sum(tokens);
     }
 
-    private BigInteger sum(List<String> numbers) {
+    private BigInteger sum(List<String> tokens) {
         BigInteger result = BigInteger.ZERO;
-        for (String number : numbers) {
-            result = result.add(new BigInteger(number));
+
+        for (String token : tokens) {
+            result = result.add(new BigInteger(token));
         }
+
         return result;
     }
 }
