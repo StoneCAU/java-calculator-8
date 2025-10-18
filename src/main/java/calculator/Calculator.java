@@ -4,8 +4,13 @@ import java.math.BigInteger;
 import java.util.List;
 
 public class Calculator {
-    private final Parser parser = new Parser();
-    private final Validator validator = new Validator();
+    private final Parser parser;
+    private final Validator validator;
+    
+    public Calculator(Parser parser, Validator validator) {
+        this.parser = parser;
+        this.validator = validator;
+    }
 
     public BigInteger calculate(String input) {
         // 공백("") 입력시 0을 리턴

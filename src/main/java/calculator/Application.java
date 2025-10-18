@@ -6,7 +6,7 @@ import java.math.BigInteger;
 
 public class Application {
     public static void main(String[] args) {
-        Calculator calculator = new Calculator();
+        Calculator calculator = new Calculator(new Parser(), new Validator());
 
         // 1. 입력
         System.out.println(Constants.INPUT_MESSAGE);
