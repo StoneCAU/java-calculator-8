@@ -11,20 +11,24 @@ public class Calculator {
         // 공백("") 입력시 0을 리턴
         if (input.isEmpty()) return BigInteger.ZERO;
 
-        // 1. 파싱 단계
+        List<String> tokens = parseAndValidate(input);
+        return sum(tokens);
+    }
+
+    private List<String> parseAndValidate(String input) {
+        // 파싱
         boolean isCustom = parser.isCustomDelimiter(input);
         String delimiter = parser.extractDelimiter(input);
         String numbers = parser.extractNumbers(input);
 
-        // 2. 검증 단계
+        // 검증
         if (isCustom) validator.validateCustomDelimiterRules(delimiter, numbers);
         else validator.validateDefaultDelimiterRules(numbers);
 
         List<String> tokens = parser.split(delimiter, numbers);
         validator.validateTokens(tokens);
 
-        // 3. 계산 단계
-        return sum(tokens);
+        return tokens;
     }
 
     private BigInteger sum(List<String> tokens) {
