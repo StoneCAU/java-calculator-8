@@ -18,7 +18,7 @@ public class Parser {
     }
 
     private String extractDelimiter(String input) {
-        if (!isCustomDelimiter(input)) return "";
+        if (isNotCustomDelimiter(input)) return "";
 
         int end = input.indexOf(CUSTOM_INDICATOR_END);
         if (end == -1) throw new IllegalArgumentException();
@@ -29,13 +29,13 @@ public class Parser {
         return delimiterPart;
     }
 
-    private boolean isCustomDelimiter(String input) {
-        return input.startsWith(CUSTOM_INDICATOR_START)
-                && input.contains(CUSTOM_INDICATOR_END);
+    private boolean isNotCustomDelimiter(String input) {
+        return !input.startsWith(CUSTOM_INDICATOR_START)
+                || !input.contains(CUSTOM_INDICATOR_END);
     }
 
     private String extractNumbers(String input) {
-        if (!isCustomDelimiter(input)) return input;
+        if (isNotCustomDelimiter(input)) return input;
         int start = input.indexOf(CUSTOM_INDICATOR_END);
         return input.substring(start + 2);
     }
