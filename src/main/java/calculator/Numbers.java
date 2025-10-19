@@ -8,10 +8,12 @@ import java.util.stream.Collectors;
 public class Numbers {
     private final Delimiter delimiter;
     private final String numbersPart;
+    private final List<String> tokens;
 
     public Numbers(Delimiter delimiter, String numbersPart) {
         this.delimiter = delimiter;
         this.numbersPart = numbersPart;
+        this.tokens = Arrays.asList(numbersPart.split(delimiter.regex()));
         validatePattern();
         validateTokens();
     }
@@ -23,7 +25,6 @@ public class Numbers {
     }
 
     private void validateTokens() {
-        List<String> tokens = Arrays.asList(numbersPart.split(delimiter.regex()));
         for (String token : tokens) {
             validateIsNumber(token);
             validateNoLeadingZero(token);
@@ -39,7 +40,7 @@ public class Numbers {
     }
 
     public List<BigInteger> toList() {
-        return Arrays.stream(numbersPart.split(delimiter.regex()))
+        return tokens.stream()
                 .map(BigInteger::new)
                 .collect(Collectors.toList());
     }
