@@ -21,10 +21,10 @@ public class Parser {
         if (isNotCustomDelimiter(input)) return "";
 
         int end = input.indexOf(CUSTOM_INDICATOR_END);
-        if (end == -1) throw new IllegalArgumentException();
+        if (end == -1) throw new IllegalArgumentException("커스텀 구분자 형식이 올바르지 않습니다.");
 
         String delimiterPart = input.substring(2, end);
-        if (delimiterPart.isEmpty()) throw new IllegalArgumentException();
+        if (delimiterPart.isEmpty()) throw new IllegalArgumentException("커스텀 구분자 형식이 올바르지 않습니다.");
 
         return delimiterPart;
     }

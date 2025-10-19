@@ -23,7 +23,7 @@ public class Numbers {
 
     private void validatePattern() {
         if (!delimiter.matches(numbersPart)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("숫자와 구분자 형식이 올바르지 않습니다.");
         }
     }
 }

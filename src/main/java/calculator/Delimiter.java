@@ -31,7 +31,7 @@ public class Delimiter {
 
     private void validate(String delimiterPart) {
         if (delimiterPart.length() != 1 || Character.isDigit(delimiterPart.charAt(0))) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("커스텀 구분자는 숫자가 아닌 1글자여야 합니다.");
         }
     }
 }
