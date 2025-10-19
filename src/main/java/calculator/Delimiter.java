@@ -1,6 +1,7 @@
 package calculator;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Delimiter {
     private static final List<String> DEFAULT_DELIMITERS = List.of(",", ":");
@@ -14,8 +15,8 @@ public class Delimiter {
         }
         // 커스텀 구분자
         else {
-            validateCustom(delimiterPart);
-            this.regex = delimiterPart;
+            validate(delimiterPart);
+            this.regex = Pattern.quote(delimiterPart);
         }
     }
 
@@ -23,8 +24,9 @@ public class Delimiter {
         return regex;
     }
 
-    private void validateCustom(String delimiterPart) {
-        if (delimiterPart.length() != 1) throw new IllegalArgumentException();
-        if (Character.isDigit(delimiterPart.charAt(0))) throw new IllegalArgumentException();
+    private void validate(String delimiterPart) {
+        if (delimiterPart.length() != 1 || Character.isDigit(delimiterPart.charAt(0))) {
+            throw new IllegalArgumentException();
+        }
     }
 }
