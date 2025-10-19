@@ -15,15 +15,15 @@ public class Numbers {
         validatePattern();
     }
 
-    private void validatePattern() {
-        String allowedPattern = "^[1-9]\\d*(?:" + delimiter.regex() + "[1-9]\\d*)*$";
-
-        if (!numbersPart.matches(allowedPattern)) throw new IllegalArgumentException();
-    }
-
     public List<BigInteger> toList() {
-        return Arrays.stream(numbersPart.split(delimiter.regex()))
+        return Arrays.stream(delimiter.split(numbersPart))
                 .map(BigInteger::new)
                 .collect(Collectors.toList());
+    }
+
+    private void validatePattern() {
+        if (!delimiter.matches(numbersPart)) {
+            throw new IllegalArgumentException();
+        }
     }
 }

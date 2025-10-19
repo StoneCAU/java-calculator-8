@@ -20,8 +20,13 @@ public class Delimiter {
         }
     }
 
-    public String regex() {
-        return regex;
+    public String[] split(String input) {
+        return input.split(regex);
+    }
+
+    public boolean matches(String input) {
+        String allowedPattern = "^[1-9]\\d*(?:" + regex + "[1-9]\\d*)*$";
+        return input.matches(allowedPattern);
     }
 
     private void validate(String delimiterPart) {
