@@ -29,14 +29,14 @@ public class Parser {
         return delimiterPart;
     }
 
-    private boolean isNotCustomDelimiter(String input) {
-        return !input.startsWith(CUSTOM_INDICATOR_START)
-                || !input.contains(CUSTOM_INDICATOR_END);
-    }
-
     private String extractNumbers(String input) {
         if (isNotCustomDelimiter(input)) return input;
         int start = input.indexOf(CUSTOM_INDICATOR_END);
         return input.substring(start + 2);
+    }
+
+    private boolean isNotCustomDelimiter(String input) {
+        return !input.startsWith(CUSTOM_INDICATOR_START)
+                || !input.contains(CUSTOM_INDICATOR_END);
     }
 }
