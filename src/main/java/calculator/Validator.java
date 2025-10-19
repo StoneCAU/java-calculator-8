@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Validator {
+    private static final List<String> DEFAULT_DELIMITERS = List.of(",", ":");
+
     public void validateCustomDelimiterRules(String delimiter, String numbers) {
         // 1. delimiter 검사
         validateCustomDelimiter(delimiter);
@@ -37,7 +39,7 @@ public class Validator {
 
     public void validateDefaultDelimiterRules(String numbers) {
         // 1. 문자열은 구분자로 시작/끝날 수 없다
-        for (String delimiter : Constants.DEFAULT_DELIMITERS) {
+        for (String delimiter : DEFAULT_DELIMITERS) {
             if (numbers.startsWith(delimiter) || numbers.endsWith(delimiter)) throw new IllegalArgumentException();
         }
 
@@ -45,7 +47,7 @@ public class Validator {
         // [,:] -> 쉼표(,) 또는 콜론(:) 중 하나
         // {2,} -> 위 문자가 2번 이상 연속됨
         // .* ... .* -> 문자열 어디에든 그런 패턴이 존재하면 true
-        String delimiterPattern = "[" + String.join("", Constants.DEFAULT_DELIMITERS) + "]{2,}";
+        String delimiterPattern = "[" + String.join("", DEFAULT_DELIMITERS) + "]{2,}";
         if (numbers.matches(".*" + delimiterPattern + ".*")) throw new IllegalArgumentException();
 
         // 3. 기본 구분자 외의 문자가 포함될 수 없다
