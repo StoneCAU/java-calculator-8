@@ -7,12 +7,13 @@ public class Numbers {
     public Numbers(Delimiter delimiter, String numbersPart) {
         this.delimiter = delimiter;
         this.numbersPart = numbersPart;
-        validateNumbers();
+        validatePattern();
     }
 
-    private void validateNumbers() {
-        String allowedPattern = "^[1-9](?:" + delimiter.regex() + "[1-9])*$";
+    private void validatePattern() {
+        String allowedPattern = "^\\d+(?:" + delimiter.regex() + "\\d+)*$";
 
         if (!numbersPart.matches(allowedPattern)) throw new IllegalArgumentException();
     }
+
 }
