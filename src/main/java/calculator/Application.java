@@ -9,7 +9,7 @@ public class Application {
     private static final String OUTPUT_MESSAGE = "결과 : %s";
 
     public static void main(String[] args) {
-        Calculator calculator = new Calculator(new Parser(), new Validator());
+        Calculator calculator = new Calculator(new Parser());
 
         // 1. 입력
         System.out.println(INPUT_MESSAGE);
